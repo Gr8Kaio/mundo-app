@@ -1086,6 +1086,34 @@ function haversineKm(lat1, lon1, lat2, lon2){
   const a = Math.sin(dLat/2)**2 + Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.sin(dLon/2)**2;
   return 2 * R * Math.asin(Math.sqrt(a));
 }
+// Downsampled border vertices ([lat,lon]) per feature, cached — for edge distance.
+const _sampleCache = new Map();
+function samplesOf(key){
+  if (_sampleCache.has(key)) return _sampleCache.get(key);
+  let pts = [];
+  const d = GEO.countries[key];
+  if (d && d.r){
+    const all = [];
+    for (const ring of d.r) for (const p of ring) all.push([90 - p[1]/TY*180, p[0]/TX*360 - 180]);
+    const CAP = 140;
+    if (all.length <= CAP) pts = all;
+    else { const step = all.length / CAP; for (let i = 0; i < CAP; i++) pts.push(all[Math.floor(i*step)]); }
+  }
+  if (!pts.length){ const ll = latLonOf(key); if (ll) pts = [[ll[0], ll[1]]]; }
+  _sampleCache.set(key, pts);
+  return pts;
+}
+// Minimum great-circle distance (km) between two features' borders — the
+// intuitive "how close are these two landmasses" measure (India↔Sri Lanka ≈ tiny).
+function minEdgeKm(a, b){
+  const A = samplesOf(a), B = samplesOf(b);
+  let mn = Infinity;
+  for (const p of A) for (const q of B){
+    const dd = haversineKm(p[0], p[1], q[0], q[1]);
+    if (dd < mn) mn = dd;
+  }
+  return mn === Infinity ? MAX_KM : mn;
+}
 // 0 (far/cold) -> 1 (on top/hot). Exponential so nearby guesses ramp up fast.
 function proximity(km){ return Math.exp(-km / 3500); }
 // Heat ramp: deep blue (cold) -> amber -> hot red, keyed on proximity.
@@ -1511,8 +1539,8 @@ function handleHotColdGuess(){
   input.value = "";
   guessCount++;
   document.getElementById("guessCount").textContent = guessCount;
-  const ll = latLonOf(key), tl = latLonOf(targetKey);
-  const dist = key === targetKey ? 0 : haversineKm(ll[0], ll[1], tl[0], tl[1]);
+  const ll = latLonOf(key);
+  const dist = key === targetKey ? 0 : minEdgeKm(key, targetKey);
   const prox = proximity(dist);
   guesses.push({key, prox, dist});
   repaint();
