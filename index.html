@@ -1220,8 +1220,7 @@ function renderHistory(){
     if (g.key === targetKey)
       return `<div class="hrow htarget"><span class="hsw" style="background:#7a0d17"></span><span class="hname">${NAMES[g.key][0]}</span><span class="hpct">🎯</span></div>`;
     return `<div class="hrow"><span class="hsw" style="background:${heatColor(g.prox)}"></span>` +
-      `<span class="hname">${NAMES[g.key][0]}</span>` +
-      `<span class="hpct">${Math.round(g.prox*100)}%</span></div>`;
+      `<span class="hname">${NAMES[g.key][0]}</span></div>`;
   }).join("");
 }
 
