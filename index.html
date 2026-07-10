@@ -383,6 +383,7 @@ document.getElementById("total").textContent = TOTAL;
 // ---- state ----
 const found = new Set();
 let over = false, startT = null, timerInt = null, elapsed = 0;
+let lastContinent = null;
 
 // ---- continent chips ----
 const contTotals = {}, contFound = {};
@@ -765,6 +766,7 @@ input.addEventListener("keydown", e => {
   }
   if (!startT){ startT = Date.now(); timerInt = setInterval(tickTimer, 1000); }
   found.add(key);
+  lastContinent = C[key][1];
   contFound[C[key][1]]++;
   updateChip(C[key][1]);
   repaint();
@@ -788,7 +790,12 @@ document.getElementById("hint").addEventListener("click", () => {
   if (over) return;
   const remaining = Object.keys(C).filter(k => !found.has(k));
   if (!remaining.length) return;
-  const k = remaining[Math.floor(Math.random() * remaining.length)];
+  let pool = remaining;
+  if (lastContinent){
+    const sameCont = remaining.filter(k => C[k][1] === lastContinent);
+    if (sameCont.length) pool = sameCont;
+  }
+  const k = pool[Math.floor(Math.random() * pool.length)];
   setMsg(`Hint: starts with "${C[k][0][0]}" — ${CONTS[C[k][1]]} (${C[k][0].length} letters)`, "dup");
   input.focus();
 });
