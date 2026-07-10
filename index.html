@@ -99,6 +99,7 @@
     <p id="endsub"></p>
     <div id="misslist"></div>
     <button id="closeend">View globe</button>
+    <button id="restartend">Restart</button>
   </div>
 </div>
 <footer>
@@ -109,6 +110,7 @@
     <button id="zoombtn" class="toggle" title="Camera flies to each correct country">Auto-zoom</button>
     <button id="hint" title="Hint">Hint</button>
     <button id="giveup" class="danger">Give up</button>
+    <button id="restartbtn" title="Restart the game">Restart</button>
   </div>
 </footer>
 
@@ -841,6 +843,12 @@ function finish(won){
 }
 document.getElementById("closeend").addEventListener("click", () =>
   document.getElementById("endpanel").style.display = "none");
+
+function restartGame(){
+  if (over || confirm("Restart the game? Your progress will be lost.")) location.reload();
+}
+document.getElementById("restartbtn").addEventListener("click", restartGame);
+document.getElementById("restartend").addEventListener("click", restartGame);
 
 input.focus();
 </script>
