@@ -63,8 +63,9 @@
   #guess.shake{animation:shake .3s}
   @keyframes shake{25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
   button{background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.14); border-radius:10px;
-    color:var(--ink); font-size:13px; padding:0 16px; cursor:pointer; font-family:var(--sans); white-space:nowrap}
-  button:hover{background:rgba(255,255,255,.11)}
+    color:var(--ink); font-size:13px; padding:0 16px; cursor:pointer; font-family:var(--sans); white-space:nowrap;
+    transition:background .15s ease, border-color .15s ease}
+  button:hover{background:rgba(255,255,255,.11); border-color:rgba(255,255,255,.24)}
   button.danger{color:#f29ba4}
   button.toggle.off{opacity:.4}
 
@@ -78,39 +79,192 @@
   .missgroup li{font-size:12.5px; font-family:var(--mono); background:rgba(255,255,255,.05);
     border:1px solid rgba(255,255,255,.09); border-radius:6px; padding:3px 9px}
   #closeend{margin-top:8px; padding:8px 16px}
+  #endpanel.win{text-align:center; padding-top:16vh;
+    background:radial-gradient(120% 90% at 50% 12%, rgba(28,74,52,.6), rgba(6,13,24,.9) 58%, rgba(4,8,15,.96))}
+  #endpanel.win #endtitle{font-size:38px; font-weight:800; letter-spacing:.01em; margin-bottom:12px; font-family:var(--sans);
+    background:linear-gradient(180deg,#a7f3ce,#34c471); -webkit-background-clip:text; background-clip:text; color:transparent}
+  #endpanel.win #endsub{font-size:15px; margin-bottom:10px}
+  #endpanel.win #misslist{display:none}
+  #endstats{color:var(--ink-dim); font-size:12.5px; font-family:var(--mono); margin-bottom:16px}
+  .endbtns{display:flex; flex-wrap:wrap; gap:8px}
+  #endpanel.win .endbtns{justify-content:center}
+  #shareend{padding:8px 16px; border-color:rgba(90,184,214,.5); background:rgba(90,184,214,.14)}
+  #shareend:hover{background:rgba(90,184,214,.24)}
+
+  /* guess history panel */
+  #history{position:absolute; top:10px; right:10px; z-index:6; width:min(46vw,220px); max-height:56%;
+    overflow-y:auto; display:flex; flex-direction:column; gap:4px; padding:8px;
+    background:rgba(8,15,26,.72); border:1px solid rgba(255,255,255,.10); border-radius:12px;
+    backdrop-filter:blur(4px); -webkit-backdrop-filter:blur(4px)}
+  .hrow{display:flex; align-items:center; gap:7px; font-size:12px; font-family:var(--mono)}
+  .hrow .hsw{flex:none; width:11px; height:11px; border-radius:3px}
+  .hrow .hname{flex:1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+  .hrow .hpct{flex:none; color:var(--ink-dim); min-width:30px; text-align:right}
+  .hrow.htarget{color:#f2b8b8; font-weight:600}
+
+  /* start-screen region pills + settings */
+  .regionrow{display:flex; flex-wrap:wrap; align-items:center; justify-content:center; gap:6px;
+    width:100%; max-width:380px; margin:-4px 0 4px}
+  .regionlbl{font-family:var(--mono); font-size:10.5px; letter-spacing:.18em; text-transform:uppercase;
+    color:var(--ink-dim); margin-right:2px}
+  .regionpill{font-size:12px; padding:5px 11px; border-radius:99px; background:rgba(255,255,255,.05);
+    border:1px solid rgba(255,255,255,.12)}
+  .regionpill.on{background:rgba(90,184,214,.2); border-color:rgba(90,184,214,.6); color:#cdeef8}
+  .modebtn.daily::before{background:linear-gradient(180deg,#b78bf0,#7c5cd6)}
+  .modebtn.daily:hover{border-color:rgba(183,139,240,.55); box-shadow:0 12px 32px -14px rgba(183,139,240,.6)}
+  .settingsrow{display:flex; flex-wrap:wrap; justify-content:center; gap:8px; margin-top:20px}
+  .settingbtn{font-size:12px; padding:7px 13px; border-radius:99px}
+  .statsbtn{margin-top:18px; padding:8px 20px; border-radius:99px; font-size:13px}
+
+  /* stats panel */
+  #statspanel{position:absolute; inset:0; display:none; overflow-y:auto; z-index:12; padding:24px 20px;
+    background:radial-gradient(120% 90% at 50% 8%, rgba(30,54,86,.5), rgba(6,13,24,.92) 60%, rgba(4,8,15,.97));
+    backdrop-filter:blur(7px); -webkit-backdrop-filter:blur(7px)}
+  #statspanel h2{font-size:26px; font-weight:700; margin-bottom:6px; text-align:center}
+  #statspanel h2, .stats-hdr, #records, #gamelog{max-width:520px; margin-left:auto; margin-right:auto}
+  .stats-hdr{font-family:var(--mono); font-size:11px; letter-spacing:.2em; text-transform:uppercase;
+    color:var(--ink-dim); margin-top:18px; margin-bottom:8px}
+  #records{display:flex; flex-direction:column; gap:9px}
+  .recrow{background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.08); border-radius:10px; padding:10px 12px}
+  .recrow .reclabel{font-size:13px; font-weight:600; margin-bottom:3px}
+  .recrow .recval{font-size:12px; color:var(--ink-dim); font-family:var(--mono)}
+  #gamelog{display:flex; flex-direction:column; gap:6px}
+  .logrow{display:flex; align-items:center; gap:9px; font-size:12.5px; font-family:var(--mono);
+    background:rgba(255,255,255,.03); border:1px solid rgba(255,255,255,.07); border-radius:8px; padding:7px 10px}
+  .logrow .licon{flex:none; width:16px; text-align:center}
+  .logrow .llabel{flex:none; min-width:82px; color:var(--ink-dim)}
+  .logrow .ldetail{flex:1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+  .logrow .ltime{flex:none; color:var(--ink-dim)}
+  .stats-empty{color:var(--ink-dim); font-size:13px; font-family:var(--mono)}
+  #closestats{display:block; margin:22px auto 8px; padding:9px 24px}
+
+  /* footer controls */
+  #controls{display:flex; flex-direction:column; gap:8px}
+  #controls > #guess{flex:0 0 auto; width:100%}
+  .btnrow{display:flex; gap:8px; flex-wrap:wrap}
+  .btnrow button{flex:0 1 auto}
+
+  #startpanel{position:absolute; inset:0; display:flex; flex-direction:column; align-items:center;
+    justify-content:safe center; gap:0; padding:26px 22px; z-index:11; text-align:center; overflow-y:auto;
+    background:radial-gradient(120% 90% at 50% 6%, rgba(30,54,86,.55), rgba(6,13,24,.86) 60%, rgba(4,8,15,.95));
+    backdrop-filter:blur(7px); -webkit-backdrop-filter:blur(7px)}
+  #startpanel .eyebrow{font-family:var(--mono); font-size:11px; letter-spacing:.34em; text-transform:uppercase;
+    color:var(--ink-dim); margin-bottom:12px}
+  #startpanel h2{font-size:34px; font-weight:700; letter-spacing:.01em; margin-bottom:7px; line-height:1.05;
+    background:linear-gradient(180deg,#ffffff,#a9c2dc); -webkit-background-clip:text; background-clip:text; color:transparent}
+  #startpanel > p{color:var(--ink-dim); font-size:14px; margin-bottom:26px; font-family:var(--sans)}
+  .modes{display:flex; flex-direction:column; gap:14px; width:100%; max-width:380px}
+  .modebtn{position:relative; display:flex; text-align:left; padding:16px 18px 16px 20px; height:auto;
+    white-space:normal; border-radius:16px; background:rgba(255,255,255,.045); border:1px solid rgba(255,255,255,.10);
+    overflow:hidden; transition:transform .18s ease, border-color .18s ease, box-shadow .18s ease, background .18s ease}
+  .modebtn::before{content:""; position:absolute; left:0; top:0; bottom:0; width:4px; border-radius:4px 0 0 4px}
+  .modebtn:hover{transform:translateY(-2px); background:rgba(255,255,255,.07)}
+  .modebtn:active{transform:translateY(0)}
+  .modebtn .modetext{display:flex; flex-direction:column; gap:3px}
+  .modebtn strong{font-size:16px; font-weight:600}
+  .modebtn .modetext span{font-size:12.5px; color:var(--ink-dim); font-weight:400; font-family:var(--sans); line-height:1.45}
+  .modebtn.practice::before{background:linear-gradient(180deg,#5ab8d6,#63c98f)}
+  .modebtn.practice:hover{border-color:rgba(90,184,214,.55); box-shadow:0 12px 32px -14px rgba(90,184,214,.6)}
+  .modebtn.hotcold::before{background:linear-gradient(180deg,#f4a63a,#ef5d60)}
+  .modebtn.hotcold:hover{border-color:rgba(239,93,96,.55); box-shadow:0 12px 32px -14px rgba(239,93,96,.6)}
   @media(max-width:640px){
     header{gap:8px; padding:10px 12px 4px} .chips{padding:0 12px 6px}
     footer{padding:8px 12px 12px} .score{font-size:18px} .chip .bar{display:none}
+    #startpanel{padding:20px 16px} #startpanel h2{font-size:28px}
+    #startpanel > p{margin-bottom:18px} .modes{gap:11px} .modebtn{padding:13px 15px 13px 17px}
+    .settingsrow{margin-top:14px}
+    #history{width:min(52vw,180px); max-height:48%; top:8px; right:8px; padding:6px}
+    .hrow{font-size:11px} .btnrow button{flex:1 1 auto}
+    #guess{font-size:16px} /* keep >=16px so iOS doesn't zoom on focus */
   }
 </style>
 </head>
 <body>
 <header>
-  <h1>World</h1>
-  <div class="clock" id="clock">00:00</div>
-  <div class="score"><span id="count">0</span><small> / <span id="total">?</span></small></div>
+  <h1>WorldPI</h1>
+  <div class="clock" id="clock" style="display:none">00:00</div>
+  <div class="score" id="scorePractice" style="display:none"><span id="count">0</span><small> / <span id="total">?</span></small></div>
+  <div class="score" id="scoreHotcold" style="display:none"><span id="guessCount">0</span><small> guesses</small></div>
 </header>
-<div class="chips" id="chips"></div>
+<div class="chips" id="chips" style="display:none"></div>
 <div id="stage">
   <canvas id="glcanvas"></canvas>
   <div id="tip"></div>
+  <div id="history" style="display:none"></div>
+  <div id="startpanel">
+    <div class="eyebrow" id="eyebrow-lbl">World Geography</div>
+    <h2>WorldPI</h2>
+    <p id="tagline">Choose how you want to play.</p>
+    <div class="modes">
+      <button id="mode-practice" class="modebtn practice">
+        <span class="modetext">
+          <strong id="practice-title">Practice</strong>
+          <span id="practice-desc">Name every country at your own pace — no pressure, just the map.</span>
+        </span>
+      </button>
+      <div class="regionrow" id="regionrow">
+        <span class="regionlbl" id="region-lbl">Region</span>
+        <button class="regionpill on" data-r="">All</button>
+        <button class="regionpill" data-r="AF">Africa</button>
+        <button class="regionpill" data-r="AS">Asia</button>
+        <button class="regionpill" data-r="EU">Europe</button>
+        <button class="regionpill" data-r="NA">N. America</button>
+        <button class="regionpill" data-r="SA">S. America</button>
+        <button class="regionpill" data-r="OC">Oceania</button>
+      </div>
+      <button id="mode-hotcold" class="modebtn hotcold">
+        <span class="modetext">
+          <strong id="guess-title">Guess the Country</strong>
+          <span id="guess-desc">One mystery country. Each guess glows hotter as you close in.</span>
+        </span>
+      </button>
+      <button id="mode-daily" class="modebtn daily">
+        <span class="modetext">
+          <strong id="daily-title">Daily Challenge</strong>
+          <span id="daily-desc">Same mystery country for everyone today — one shareable run.</span>
+        </span>
+      </button>
+    </div>
+    <button id="open-stats" class="statsbtn">Stats</button>
+    <div class="settingsrow">
+      <button id="toggle-lang" class="settingbtn">Idioma: Español</button>
+      <button id="toggle-sound" class="settingbtn">Sound: On</button>
+      <button id="toggle-hard" class="settingbtn">Hard mode: Off</button>
+    </div>
+  </div>
+  <div id="statspanel" style="display:none">
+    <h2 id="stats-title">Stats</h2>
+    <h3 class="stats-hdr" id="records-hdr">Records</h3>
+    <div id="records"></div>
+    <h3 class="stats-hdr" id="recent-hdr">Recent games</h3>
+    <div id="gamelog"></div>
+    <button id="closestats">Close</button>
+  </div>
   <div id="endpanel">
     <h2 id="endtitle"></h2>
     <p id="endsub"></p>
+    <p id="endstats"></p>
     <div id="misslist"></div>
-    <button id="closeend">View globe</button>
-    <button id="restartend">Restart</button>
+    <div class="endbtns">
+      <button id="shareend" style="display:none">Share result</button>
+      <button id="closeend">View globe</button>
+      <button id="restartend">Play again</button>
+      <button id="menuend">Main menu</button>
+    </div>
   </div>
 </div>
 <footer>
-  <div id="msg">Drag to spin the globe. Type a country and press Enter to color it in — English or Spanish both work.</div>
-  <div class="row">
-    <input id="guess" type="text" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Name a country…">
-    <button id="flagbtn" class="toggle" title="Show/hide flags">Flags</button>
-    <button id="zoombtn" class="toggle" title="Camera flies to each correct country">Auto-zoom</button>
-    <button id="hint" title="Hint">Hint</button>
-    <button id="giveup" class="danger">Give up</button>
-    <button id="restartbtn" title="Restart the game">Restart</button>
+  <div id="msg">Pick a mode above to begin.</div>
+  <div id="controls" style="display:none">
+    <input id="guess" type="text" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Name a country…" disabled>
+    <div class="btnrow">
+      <button id="flagbtn" class="toggle" title="Show/hide flags">Flags</button>
+      <button id="zoombtn" class="toggle" title="Camera flies to each correct country">Auto-zoom</button>
+      <button id="hint" title="Hint">Hint</button>
+      <button id="giveup" class="danger">Give up</button>
+      <button id="restartbtn" title="Restart the game">Restart</button>
+      <button id="menubtn" title="Back to main menu">Menu</button>
+    </div>
   </div>
 </footer>
 
@@ -332,8 +486,126 @@ const TERR = {
   "N. Cyprus":"Cyprus",
   "Somaliland":"Somalia"
 };
-const CONTS = {AF:"Africa",AS:"Asia",EU:"Europe",NA:"North America",SA:"South America",OC:"Oceania"};
+const CONT_I18N = {
+  en: {AF:"Africa",AS:"Asia",EU:"Europe",NA:"North America",SA:"South America",OC:"Oceania"},
+  es: {AF:"África",AS:"Asia",EU:"Europa",NA:"Norteamérica",SA:"Sudamérica",OC:"Oceanía"}
+};
+function contName(code){ return (CONT_I18N[lang] || CONT_I18N.en)[code]; }
+// alias so existing references keep working via the active language
+const CONTS = new Proxy({}, { get: (_, code) => contName(code) });
 const COLORS = {AF:"#f4a63a",AS:"#ef5d60",EU:"#5ab8d6",NA:"#63c98f",SA:"#b78bf0",OC:"#f27ba0"};
+
+// ---------- translations ----------
+function plu(n, one, many){ return n === 1 ? one : many; }
+const I18N = {
+  en: {
+    eyebrow: "World Geography",
+    tagline: "Choose how you want to play.",
+    practiceTitle: "Practice",
+    practiceDesc: "Name every country at your own pace — no pressure, just the map.",
+    regionLabel: "Region", regionAll: "All",
+    guessTitle: "Guess the Country",
+    guessDesc: "One mystery country. Each guess glows hotter as you close in.",
+    dailyTitle: "Daily Challenge",
+    dailyDesc: "Same mystery country for everyone today — one shareable run.",
+    flags: "Flags", autozoom: "Auto-zoom", hint: "Hint", giveup: "Give up",
+    restart: "Restart", menu: "Menu",
+    placeholder: "Name a country…", pickMode: "Pick a mode above to begin.",
+    share: "Share result", copied: "Copied!", viewGlobe: "View globe",
+    playAgain: "Play again", mainMenu: "Main menu",
+    soundOn: "Sound: On", soundOff: "Sound: Off", hardOn: "Hard mode: On", hardOff: "Hard mode: Off",
+    langSwitch: "Idioma: Español",
+    worldWord: "the world",
+    practiceStart: rn => `Name every country in ${rn}. Type a name and press Enter — English or Spanish both work.`,
+    hotcoldStart: "Type a country and press Enter. The board glows warmer the closer you are.",
+    dailyStart: n => `Daily Challenge #${n} — one country, the same for everyone today.`,
+    notCountry: raw => `"${raw}" — not a country I recognize.`,
+    regionReject: (c, cont, region) => `${c} is in ${cont} — this round is ${region} only.`,
+    alreadyBoard: c => `${c} — already on the board.`,
+    correctPractice: (c, cont) => `✓ ${c} — ${cont}`,
+    alreadyGuessed: c => `${c} — already guessed.`,
+    thatsIt: c => `✓ ${c} — that's it!`,
+    borders: (c, km) => `${c} — it borders the answer! (${km} km away)`,
+    tierMsg: (c, tier, km) => `${c} — ${tier} (${km} km away)`,
+    tiers: ["Boiling","Hot","Warm","Cool","Cold","Freezing"],
+    hintCont: cont => `Hint: it's in ${cont}`,
+    hintPractice: (l, cont, len) => `Hint: starts with "${l}" — ${cont} (${len} letters)`,
+    youWin: "You win!", outOfLuck: "Out of luck",
+    foundIn: (c, n, tm) => `${c} — found in ${n} ${plu(n,"guess","guesses")} · ${tm}`,
+    itWas: (c, n) => `It was ${c}. You made ${n} ${plu(n,"guess","guesses")}.`,
+    statsGuess: (best, streak, max, wins, plays) => `Best: ${best != null ? best + " guesses" : "—"} · Streak ${streak} (best ${max}) · ${wins}/${plays} won`,
+    complete: (region, total, tm) => `${region} complete: ${total}/${total} in ${tm}`,
+    incomplete: (found, total, tm) => `${found}/${total} in ${tm}`,
+    everyNamed: region => `Every country in ${region} named. Nothing left.`,
+    youMissed: n => `You missed ${n}. They have been shown in red on the globe:`,
+    statsPractice: (tm, wins) => `Best time ${tm} · ${wins} completed`,
+    gameOver: "Game over — reload to play again",
+    confirmRestart: "Restart this round? Your progress will be lost.",
+    confirmMenu: "Leave this round and return to the menu?",
+    shareSolved: n => `solved in ${n}`, shareGaveUp: n => `gave up (${n})`,
+    statsBtn: "Stats", statsTitle: "Stats", recordsHdr: "Records", recentHdr: "Recent games",
+    noGames: "No games yet — play a round!", closeStats: "Close",
+    guessShort: "Guess", dailyShort: "Daily", logGiveUp: "gave up",
+    recGuess: (best, streak, max, wins, plays) => `best ${best != null ? best + " guesses" : "—"} · streak ${streak} (max ${max}) · ${wins}/${plays} won`,
+    recPractice: (bt, wins) => `best time ${bt} · ${wins} completed`
+  },
+  es: {
+    eyebrow: "Geografía Mundial",
+    tagline: "Elige cómo quieres jugar.",
+    practiceTitle: "Práctica",
+    practiceDesc: "Nombra cada país a tu ritmo — sin presión, solo el mapa.",
+    regionLabel: "Región", regionAll: "Todos",
+    guessTitle: "Adivina el país",
+    guessDesc: "Un país misterioso. Cada intento brilla más al acercarte.",
+    dailyTitle: "Reto diario",
+    dailyDesc: "El mismo país para todos hoy — una partida para compartir.",
+    flags: "Banderas", autozoom: "Auto-zoom", hint: "Pista", giveup: "Rendirse",
+    restart: "Reiniciar", menu: "Menú",
+    placeholder: "Escribe un país…", pickMode: "Elige un modo arriba para empezar.",
+    share: "Compartir", copied: "¡Copiado!", viewGlobe: "Ver globo",
+    playAgain: "Jugar de nuevo", mainMenu: "Menú principal",
+    soundOn: "Sonido: Sí", soundOff: "Sonido: No", hardOn: "Difícil: Sí", hardOff: "Difícil: No",
+    langSwitch: "Language: English",
+    worldWord: "el mundo",
+    practiceStart: rn => `Nombra cada país de ${rn}. Escribe un nombre y pulsa Enter — vale en inglés o español.`,
+    hotcoldStart: "Escribe un país y pulsa Enter. El mapa se calienta cuanto más te acercas.",
+    dailyStart: n => `Reto diario #${n} — un país, el mismo para todos hoy.`,
+    notCountry: raw => `"${raw}" — no reconozco ese país.`,
+    regionReject: (c, cont, region) => `${c} está en ${cont} — esta ronda es solo ${region}.`,
+    alreadyBoard: c => `${c} — ya está en el mapa.`,
+    correctPractice: (c, cont) => `✓ ${c} — ${cont}`,
+    alreadyGuessed: c => `${c} — ya lo intentaste.`,
+    thatsIt: c => `✓ ${c} — ¡es ese!`,
+    borders: (c, km) => `${c} — ¡limita con la respuesta! (a ${km} km)`,
+    tierMsg: (c, tier, km) => `${c} — ${tier} (a ${km} km)`,
+    tiers: ["Ardiendo","Caliente","Templado","Fresco","Frío","Helado"],
+    hintCont: cont => `Pista: está en ${cont}`,
+    hintPractice: (l, cont, len) => `Pista: empieza por "${l}" — ${cont} (${len} letras)`,
+    youWin: "¡Ganaste!", outOfLuck: "Sin suerte",
+    foundIn: (c, n, tm) => `${c} — encontrado en ${n} ${plu(n,"intento","intentos")} · ${tm}`,
+    itWas: (c, n) => `Era ${c}. Hiciste ${n} ${plu(n,"intento","intentos")}.`,
+    statsGuess: (best, streak, max, wins, plays) => `Mejor: ${best != null ? best + " intentos" : "—"} · Racha ${streak} (récord ${max}) · ${wins}/${plays} ganadas`,
+    complete: (region, total, tm) => `${region} completado: ${total}/${total} en ${tm}`,
+    incomplete: (found, total, tm) => `${found}/${total} en ${tm}`,
+    everyNamed: region => `Nombraste todos los países de ${region}. No queda ninguno.`,
+    youMissed: n => `Te faltaron ${n}. Se muestran en rojo en el globo:`,
+    statsPractice: (tm, wins) => `Mejor tiempo ${tm} · ${wins} completados`,
+    gameOver: "Fin del juego — recarga para jugar de nuevo",
+    confirmRestart: "¿Reiniciar esta ronda? Perderás tu progreso.",
+    confirmMenu: "¿Salir de esta ronda y volver al menú?",
+    shareSolved: n => `resuelto en ${n}`, shareGaveUp: n => `me rendí (${n})`,
+    statsBtn: "Estadísticas", statsTitle: "Estadísticas", recordsHdr: "Récords", recentHdr: "Partidas recientes",
+    noGames: "Aún no hay partidas — ¡juega una ronda!", closeStats: "Cerrar",
+    guessShort: "Adivina", dailyShort: "Diario", logGiveUp: "me rendí",
+    recGuess: (best, streak, max, wins, plays) => `mejor ${best != null ? best + " intentos" : "—"} · racha ${streak} (máx ${max}) · ${wins}/${plays} ganadas`,
+    recPractice: (bt, wins) => `mejor tiempo ${bt} · ${wins} completadas`
+  }
+};
+function t(k, ...a){
+  let v = (I18N[lang] || I18N.en)[k];
+  if (v === undefined) v = I18N.en[k];
+  return typeof v === "function" ? v(...a) : v;
+}
 // invert TERR: parent -> [territory names]
 const TERR_OF = {};
 for (const t in TERR) (TERR_OF[TERR[t]] ||= []).push(t);
@@ -386,6 +658,19 @@ document.getElementById("total").textContent = TOTAL;
 const found = new Set();
 let over = false, startT = null, timerInt = null, elapsed = 0;
 let lastContinent = null;
+let mode = null, targetKey = null, guesses = [], guessCount = 0;
+let regionFilter = null, isDaily = false;
+
+// ---- persistence & settings ----
+const LS = {
+  get(k, d){ try { const v = localStorage.getItem(k); return v == null ? d : JSON.parse(v); } catch(e){ return d; } },
+  set(k, v){ try { localStorage.setItem(k, JSON.stringify(v)); } catch(e){} }
+};
+const stats = LS.get("worldpi-stats", {});
+let games = LS.get("worldpi-games", []);
+let soundOn = LS.get("worldpi-sound", true);
+let hardMode = LS.get("worldpi-hard", false);
+let lang = LS.get("worldpi-lang", "en");
 
 // ---- continent chips ----
 const contTotals = {}, contFound = {};
@@ -467,12 +752,19 @@ function repaint(){
   ctx.globalAlpha = 1;
   ctx.drawImage(earthImg, 0, 0, CW, CH);
   ctx.setTransform(CW/TX, 0, 0, CH/TY, 0, 0);   // fills use 2048-space coords
-  for (const key of found){
-    const color = COLORS[C[key][1]];
-    fillKey(key, color, .58);
-    for (const t of TERR_OF[key]||[]) fillKey(t, color, .32, .5);
+  if (mode === "hotcold"){
+    for (const g of guesses){
+      if (g.key === targetKey && over) fillKey(g.key, "#7a0d17", .95); // the answer: dark red
+      else fillKey(g.key, heatColor(g.prox), 0.45 + 0.5 * g.prox);
+    }
+  } else {
+    for (const key of found){
+      const color = COLORS[C[key][1]];
+      fillKey(key, color, .58);
+      for (const t of TERR_OF[key]||[]) fillKey(t, color, .32, .5);
+    }
+    if (over) for (const key of missingAtEnd) fillKey(key, "#e04a5f", .62);
   }
-  if (over) for (const key of missingAtEnd) fillKey(key, "#e04a5f", .62);
   tex.needsUpdate = true;
 }
 
@@ -744,6 +1036,309 @@ function latLonOf(key){
   return d ? [d.lat, d.lon, GD.countries[key] ? GD.countries[key].ext : 0.5] : null;
 }
 
+const MAX_KM = 20015; // half of Earth's circumference — furthest two points can be
+function haversineKm(lat1, lon1, lat2, lon2){
+  const R = 6371, toRad = d => d * Math.PI / 180;
+  const dLat = toRad(lat2 - lat1), dLon = toRad(lon2 - lon1);
+  const a = Math.sin(dLat/2)**2 + Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.sin(dLon/2)**2;
+  return 2 * R * Math.asin(Math.sqrt(a));
+}
+// 0 (far/cold) -> 1 (on top/hot). Exponential so nearby guesses ramp up fast.
+function proximity(km){ return Math.exp(-km / 3500); }
+// Heat ramp: deep blue (cold) -> amber -> hot red, keyed on proximity.
+function heatColor(prox){
+  const stops = [[0,[46,110,214]],[0.5,[224,150,44]],[1,[255,58,48]]];
+  let a = stops[0], b = stops[stops.length-1];
+  for (let i = 0; i < stops.length - 1; i++){
+    if (prox >= stops[i][0] && prox <= stops[i+1][0]){ a = stops[i]; b = stops[i+1]; break; }
+  }
+  const t = (prox - a[0]) / ((b[0] - a[0]) || 1);
+  const c = a[1].map((v, i) => Math.round(v + (b[1][i] - v) * t));
+  return `rgb(${c[0]},${c[1]},${c[2]})`;
+}
+function tierOf(km){
+  const i = km < 250 ? 0 : km < 1000 ? 1 : km < 2500 ? 2 : km < 5000 ? 3 : km < 9000 ? 4 : 5;
+  return t("tiers")[i];
+}
+
+// Land-border adjacency, derived once from shared border vertices in the map data.
+// Requiring >=2 shared cells avoids maritime near-misses (e.g. Japan/Russia, China/Taiwan).
+const ADJ = {};
+(function buildAdjacency(){
+  const grid = new Map();
+  for (const key in GD.countries){
+    if (!(key in C)) continue;
+    for (const ring of GD.countries[key].r){
+      for (const pt of ring){
+        const ck = Math.round(pt[0]) + "," + Math.round(pt[1]);
+        let s = grid.get(ck);
+        if (!s) grid.set(ck, s = new Set());
+        s.add(key);
+      }
+    }
+  }
+  const pairCount = new Map();
+  for (const s of grid.values()){
+    if (s.size < 2) continue;
+    const arr = [...s];
+    for (let i = 0; i < arr.length; i++)
+      for (let j = i + 1; j < arr.length; j++){
+        const pk = arr[i] < arr[j] ? arr[i]+"|"+arr[j] : arr[j]+"|"+arr[i];
+        pairCount.set(pk, (pairCount.get(pk)||0) + 1);
+      }
+  }
+  for (const [pk, n] of pairCount){
+    if (n < 2) continue;
+    const [a, b] = pk.split("|");
+    (ADJ[a] || (ADJ[a] = new Set())).add(b);
+    (ADJ[b] || (ADJ[b] = new Set())).add(a);
+  }
+})();
+
+// ---------- sound + haptics ----------
+let audioCtx = null;
+function beep(freq, dur, type){
+  if (!soundOn) return;
+  try {
+    audioCtx = audioCtx || new (window.AudioContext || window.webkitAudioContext)();
+    const o = audioCtx.createOscillator(), g = audioCtx.createGain();
+    o.type = type || "sine"; o.frequency.value = freq;
+    o.connect(g); g.connect(audioCtx.destination);
+    const t = audioCtx.currentTime;
+    g.gain.setValueAtTime(0.0001, t);
+    g.gain.exponentialRampToValueAtTime(0.16, t + 0.012);
+    g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+    o.start(t); o.stop(t + dur);
+  } catch(e){}
+}
+function haptic(p){ if (navigator.vibrate) try { navigator.vibrate(p); } catch(e){} }
+function sfx(kind){
+  if (kind === "win"){ beep(523,.12); setTimeout(()=>beep(659,.12),120); setTimeout(()=>beep(784,.22),240); haptic([25,40,55]); }
+  else if (kind === "correct"){ beep(660,.12); haptic(20); }
+  else if (kind === "warm"){ beep(500,.09); haptic(12); }
+  else if (kind === "wrong"){ beep(170,.14,"triangle"); haptic(45); }
+}
+
+// ---------- daily challenge ----------
+function todayStr(){ const d = new Date(); return d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate(); }
+function hashStr(s){ let h = 2166136261; for (let i=0;i<s.length;i++){ h ^= s.charCodeAt(i); h = Math.imul(h, 16777619); } return h >>> 0; }
+const DAILY_EPOCH = Date.UTC(2025, 0, 1);
+function dailyNumber(){ return Math.floor((Date.now() - DAILY_EPOCH) / 86400000) + 1; }
+function dailyTarget(){ const keys = Object.keys(C); return keys[hashStr(todayStr()) % keys.length]; }
+
+// ---------- shareable result ----------
+function shareText(won){
+  const head = isDaily ? `WorldPI Daily #${dailyNumber()}` : `WorldPI — ${t("guessTitle")}`;
+  const score = won ? t("shareSolved", guessCount) : t("shareGaveUp", guessCount);
+  const rows = guesses.filter(g => won || g.key !== targetKey).map(g => {
+    if (g.key === targetKey) return "🟩🟩🟩🟩🟩 🎯";
+    const fill = Math.max(1, Math.round(g.prox * 5));
+    const sq = g.prox > 0.8 ? "🟥" : g.prox > 0.55 ? "🟧" : g.prox > 0.35 ? "🟨" : "🟦";
+    return sq.repeat(fill) + "⬜".repeat(5 - fill);
+  });
+  return `${head} — ${score}\n${rows.join("\n")}\nhttps://gr8kaio.github.io/mundo-app/`;
+}
+
+// ---------- guess history panel ----------
+function renderHistory(){
+  const h = document.getElementById("history");
+  if (mode !== "hotcold" || !guesses.length){ h.style.display = "none"; return; }
+  h.style.display = "block";
+  h.innerHTML = guesses.slice().sort((a, b) => b.prox - a.prox).map(g => {
+    if (g.key === targetKey)
+      return `<div class="hrow htarget"><span class="hsw" style="background:#7a0d17"></span><span class="hname">${C[g.key][0]}</span><span class="hpct">🎯</span></div>`;
+    return `<div class="hrow"><span class="hsw" style="background:${heatColor(g.prox)}"></span>` +
+      `<span class="hname">${C[g.key][0]}</span>` +
+      `<span class="hpct">${Math.round(g.prox*100)}%</span></div>`;
+  }).join("");
+}
+
+function showControls(){
+  document.getElementById("startpanel").style.display = "none";
+  document.getElementById("controls").style.display = "flex";
+  input.disabled = false;
+  input.focus();
+}
+function applyHardMode(){ document.getElementById("hint").style.display = hardMode ? "none" : ""; }
+function goalTotal(){ return regionFilter ? contTotals[regionFilter] : TOTAL; }
+
+function beginPractice(region){
+  mode = "practice";
+  regionFilter = region || null;
+  document.getElementById("clock").style.display = "";
+  document.getElementById("scorePractice").style.display = "";
+  document.getElementById("scoreHotcold").style.display = "none";
+  document.getElementById("total").textContent = goalTotal();
+  for (const code in chipRefs) chipRefs[code].style.display = (!regionFilter || code === regionFilter) ? "" : "none";
+  chipsEl.style.display = "";
+  applyHardMode();
+  showControls();
+  setMsg(t("practiceStart", regionFilter ? contName(regionFilter) : t("worldWord")));
+}
+function startHotColdUI(){
+  document.getElementById("clock").style.display = "";
+  chipsEl.style.display = "none";
+  document.getElementById("scorePractice").style.display = "none";
+  document.getElementById("scoreHotcold").style.display = "";
+  document.getElementById("history").style.display = "none";
+  applyHardMode();
+  showControls();
+}
+function beginHotCold(){
+  mode = "hotcold"; isDaily = false;
+  const keys = Object.keys(C);
+  targetKey = keys[Math.floor(Math.random() * keys.length)];
+  startHotColdUI();
+  setMsg(t("hotcoldStart"));
+}
+function beginDaily(){
+  mode = "hotcold"; isDaily = true;
+  targetKey = dailyTarget();
+  startHotColdUI();
+  setMsg(t("dailyStart", dailyNumber()));
+}
+
+let selectedRegion = null;
+document.getElementById("mode-practice").addEventListener("click", () => beginPractice(selectedRegion));
+document.getElementById("mode-hotcold").addEventListener("click", beginHotCold);
+document.getElementById("mode-daily").addEventListener("click", beginDaily);
+document.querySelectorAll(".regionpill").forEach(p => p.addEventListener("click", () => {
+  selectedRegion = p.dataset.r || null;
+  document.querySelectorAll(".regionpill").forEach(q => q.classList.toggle("on", q === p));
+}));
+
+// ---------- apply language to all static UI ----------
+function setText(id, str){ const el = document.getElementById(id); if (el) el.textContent = str; }
+function applyLang(){
+  document.documentElement.lang = lang;
+  setText("eyebrow-lbl", t("eyebrow"));
+  setText("tagline", t("tagline"));
+  setText("practice-title", t("practiceTitle"));
+  setText("practice-desc", t("practiceDesc"));
+  setText("region-lbl", t("regionLabel"));
+  setText("guess-title", t("guessTitle"));
+  setText("guess-desc", t("guessDesc"));
+  setText("daily-title", t("dailyTitle"));
+  setText("daily-desc", t("dailyDesc"));
+  document.querySelectorAll(".regionpill").forEach(p => { p.textContent = p.dataset.r ? contName(p.dataset.r) : t("regionAll"); });
+  for (const code in chipRefs) chipRefs[code].querySelector(".lbl").textContent = contName(code);
+  setText("flagbtn", t("flags")); setText("zoombtn", t("autozoom"));
+  setText("hint", t("hint")); setText("giveup", t("giveup"));
+  setText("restartbtn", t("restart")); setText("menubtn", t("menu"));
+  setText("closeend", t("viewGlobe")); setText("restartend", t("playAgain")); setText("menuend", t("mainMenu"));
+  setText("open-stats", t("statsBtn")); setText("stats-title", t("statsTitle"));
+  setText("records-hdr", t("recordsHdr")); setText("recent-hdr", t("recentHdr")); setText("closestats", t("closeStats"));
+  input.placeholder = t("placeholder");
+  if (!mode) setMsg(t("pickMode"));
+  document.getElementById("toggle-lang").textContent = t("langSwitch");
+  updateSettingLabels();
+}
+
+// ---------- stats / history panel ----------
+function renderStats(){
+  const rec = document.getElementById("records");
+  rec.innerHTML = "";
+  const order = ["guess","practice:all","practice:AF","practice:AS","practice:EU","practice:NA","practice:SA","practice:OC"];
+  const buckets = Object.keys(stats).filter(b => stats[b] && stats[b].plays)
+    .sort((a, b) => order.indexOf(a) - order.indexOf(b));
+  if (!buckets.length){
+    rec.innerHTML = `<div class="stats-empty"></div>`;
+    rec.firstChild.textContent = t("noGames");
+  }
+  for (const b of buckets){
+    const st = stats[b];
+    let label, val;
+    if (b === "guess"){
+      label = t("guessTitle");
+      val = t("recGuess", st.bestGuesses, st.streak, st.maxStreak, st.wins, st.plays);
+    } else {
+      const code = b.split(":")[1];
+      label = `${t("practiceTitle")} · ${code === "all" ? t("worldWord") : contName(code)}`;
+      val = t("recPractice", fmtTime(st.bestTime), st.wins);
+    }
+    const d = document.createElement("div");
+    d.className = "recrow";
+    d.innerHTML = `<div class="reclabel"></div><div class="recval"></div>`;
+    d.querySelector(".reclabel").textContent = label;
+    d.querySelector(".recval").textContent = val;
+    rec.appendChild(d);
+  }
+  const log = document.getElementById("gamelog");
+  log.innerHTML = "";
+  if (!games.length){
+    log.innerHTML = `<div class="stats-empty"></div>`;
+    log.firstChild.textContent = t("noGames");
+  }
+  for (const g of games){
+    let llabel, ldetail;
+    if (g.mode === "hotcold"){
+      llabel = g.daily ? `${t("dailyShort")} #${g.daily}` : t("guessShort");
+      ldetail = `${C[g.target] ? C[g.target][0] : "?"} · ${g.won ? g.guesses : t("logGiveUp")}`;
+    } else {
+      llabel = t("practiceTitle");
+      ldetail = `${g.region ? contName(g.region) : t("worldWord")} · ${g.found}/${g.total}`;
+    }
+    const row = document.createElement("div");
+    row.className = "logrow" + (g.won ? " lwin" : "");
+    row.innerHTML = `<span class="licon"></span><span class="llabel"></span><span class="ldetail"></span><span class="ltime"></span>`;
+    row.querySelector(".licon").textContent = !g.won ? "✗" : (g.mode === "hotcold" ? "🎯" : "🏁");
+    row.querySelector(".llabel").textContent = llabel;
+    row.querySelector(".ldetail").textContent = ldetail;
+    row.querySelector(".ltime").textContent = fmtTime(g.time);
+    log.appendChild(row);
+  }
+}
+document.getElementById("open-stats").addEventListener("click", () => {
+  renderStats(); document.getElementById("statspanel").style.display = "block";
+});
+document.getElementById("closestats").addEventListener("click", () => {
+  document.getElementById("statspanel").style.display = "none";
+});
+
+// settings toggles (persisted)
+function updateSettingLabels(){
+  setText("toggle-sound", soundOn ? t("soundOn") : t("soundOff"));
+  setText("toggle-hard", hardMode ? t("hardOn") : t("hardOff"));
+}
+document.getElementById("toggle-sound").addEventListener("click", () => {
+  soundOn = !soundOn; LS.set("worldpi-sound", soundOn); updateSettingLabels(); if (soundOn) sfx("correct");
+});
+document.getElementById("toggle-hard").addEventListener("click", () => {
+  hardMode = !hardMode; LS.set("worldpi-hard", hardMode); updateSettingLabels(); if (mode) applyHardMode();
+});
+document.getElementById("toggle-lang").addEventListener("click", () => {
+  lang = lang === "en" ? "es" : "en"; LS.set("worldpi-lang", lang); applyLang();
+});
+// share result
+document.getElementById("shareend").addEventListener("click", async e => {
+  const txt = e.currentTarget.dataset.share || "";
+  try { await navigator.clipboard.writeText(txt); e.currentTarget.textContent = t("copied"); }
+  catch(err){ window.prompt("Copy your result:", txt); }
+  setTimeout(() => { e.currentTarget.textContent = t("share"); }, 1600);
+});
+// back to main menu
+function backToMenu(){
+  if (!over && !confirm(t("confirmMenu"))) return;
+  sessionStorage.removeItem(REPLAY_KEY);
+  location.reload();
+}
+document.getElementById("menubtn").addEventListener("click", backToMenu);
+document.getElementById("menuend").addEventListener("click", backToMenu);
+applyLang();
+
+// Restart / play again re-launches the current mode directly, skipping the menu.
+const REPLAY_KEY = "worldpi-replay";
+const _replay = sessionStorage.getItem(REPLAY_KEY);
+if (_replay){
+  sessionStorage.removeItem(REPLAY_KEY);
+  if (_replay.startsWith("practice")){
+    const r = _replay.split(":")[1] || null;
+    selectedRegion = r;
+    document.querySelectorAll(".regionpill").forEach(q => q.classList.toggle("on", (q.dataset.r || "") === (r || "")));
+    beginPractice(r);
+  } else beginHotCold(); // daily replays as a fresh random round
+}
+
 function tickTimer(){
   elapsed = Math.floor((Date.now() - startT) / 1000);
   const m = String(Math.floor(elapsed / 60)).padStart(2, "0");
@@ -752,17 +1347,28 @@ function tickTimer(){
 }
 
 input.addEventListener("keydown", e => {
-  if (e.key !== "Enter" || over) return;
+  if (e.key !== "Enter" || over || !mode) return;
+  if (mode === "hotcold") handleHotColdGuess();
+  else handlePracticeGuess();
+});
+
+function handlePracticeGuess(){
   const raw = input.value.trim();
   if (!raw) return;
   const key = matchCountry(norm(raw));
   if (!key){
-    setMsg(`"${raw}" — not a country I recognize.`, "no");
+    setMsg(t("notCountry", raw), "no");
     input.classList.remove("shake"); void input.offsetWidth; input.classList.add("shake");
+    sfx("wrong");
+    return;
+  }
+  if (regionFilter && C[key][1] !== regionFilter){
+    setMsg(t("regionReject", C[key][0], contName(C[key][1]), contName(regionFilter)), "dup");
+    input.value = "";
     return;
   }
   if (found.has(key)){
-    setMsg(`${C[key][0]} — already on the board.`, "dup");
+    setMsg(t("alreadyBoard", C[key][0]), "dup");
     input.value = "";
     return;
   }
@@ -783,14 +1389,63 @@ input.addEventListener("keydown", e => {
     addFlag(key);
   }
   countEl.textContent = found.size;
-  setMsg(`✓ ${C[key][0]} — ${CONTS[C[key][1]]}`, "ok");
+  setMsg(t("correctPractice", C[key][0], contName(C[key][1])), "ok");
+  sfx("correct");
   input.value = "";
-  if (found.size === TOTAL) finish(true);
-});
+  if (found.size === goalTotal()) finish(true);
+}
+
+function handleHotColdGuess(){
+  const raw = input.value.trim();
+  if (!raw) return;
+  const key = matchCountry(norm(raw));
+  if (!key){
+    setMsg(t("notCountry", raw), "no");
+    input.classList.remove("shake"); void input.offsetWidth; input.classList.add("shake");
+    sfx("wrong");
+    return;
+  }
+  if (guesses.some(g => g.key === key)){
+    setMsg(t("alreadyGuessed", C[key][0]), "dup");
+    input.value = "";
+    return;
+  }
+  if (!startT){ startT = Date.now(); timerInt = setInterval(tickTimer, 1000); }
+  input.value = "";
+  guessCount++;
+  document.getElementById("guessCount").textContent = guessCount;
+  const ll = latLonOf(key), tl = latLonOf(targetKey);
+  const dist = key === targetKey ? 0 : haversineKm(ll[0], ll[1], tl[0], tl[1]);
+  const prox = proximity(dist);
+  guesses.push({key, prox, dist});
+  repaint();
+  renderHistory();
+  if (ll){
+    const [lat, lon] = ll;
+    if (autoCam) animateTo(lat, lon, 2.5);
+    pulseAt(lat, lon);
+    addFlag(key);
+  }
+  if (key === targetKey){
+    setMsg(t("thatsIt", C[key][0]), "ok");
+    finish(true);
+  } else if (!hardMode && ADJ[targetKey] && ADJ[targetKey].has(key)){
+    setMsg(t("borders", C[key][0], Math.round(dist)), "ok");
+    sfx("warm");
+  } else {
+    setMsg(t("tierMsg", C[key][0], tierOf(dist), Math.round(dist)), dist < 1000 ? "ok" : dist < 5000 ? "dup" : "no");
+    sfx("warm");
+  }
+}
 
 document.getElementById("hint").addEventListener("click", () => {
-  if (over) return;
-  const remaining = Object.keys(C).filter(k => !found.has(k));
+  if (over || !mode) return;
+  if (mode === "hotcold"){
+    setMsg(t("hintCont", contName(C[targetKey][1])), "dup");
+    input.focus();
+    return;
+  }
+  const remaining = Object.keys(C).filter(k => !found.has(k) && (!regionFilter || C[k][1] === regionFilter));
   if (!remaining.length) return;
   let pool = remaining;
   if (lastContinent){
@@ -798,39 +1453,104 @@ document.getElementById("hint").addEventListener("click", () => {
     if (sameCont.length) pool = sameCont;
   }
   const k = pool[Math.floor(Math.random() * pool.length)];
-  setMsg(`Hint: starts with "${C[k][0][0]}" — ${CONTS[C[k][1]]} (${C[k][0].length} letters)`, "dup");
+  setMsg(t("hintPractice", C[k][0][0], contName(C[k][1]), C[k][0].length), "dup");
   input.focus();
 });
 
 document.getElementById("giveup").addEventListener("click", () => {
-  if (over) return;
+  if (over || !mode) return;
   finish(false);
 });
+
+function fmtTime(sec){
+  if (sec == null) return "\u2014";
+  return String(Math.floor(sec/60)).padStart(2,"0") + ":" + String(sec%60).padStart(2,"0");
+}
+function bumpStats(won){
+  const bucket = mode === "practice" ? "practice:" + (regionFilter || "all") : "guess";
+  const st = stats[bucket] || (stats[bucket] = { plays:0, wins:0, streak:0, maxStreak:0, bestTime:null, bestGuesses:null });
+  st.plays++;
+  if (won){
+    st.wins++; st.streak++; if (st.streak > st.maxStreak) st.maxStreak = st.streak;
+    if (st.bestTime == null || elapsed < st.bestTime) st.bestTime = elapsed;
+    if (mode === "hotcold" && (st.bestGuesses == null || guessCount < st.bestGuesses)) st.bestGuesses = guessCount;
+  } else { st.streak = 0; }
+  LS.set("worldpi-stats", stats);
+  return st;
+}
+function logGame(won){
+  const entry = { ts: Date.now(), mode, won, time: elapsed };
+  if (mode === "hotcold"){
+    entry.target = targetKey; entry.guesses = guessCount;
+    if (isDaily) entry.daily = dailyNumber();
+  } else {
+    entry.region = regionFilter || null; entry.found = found.size; entry.total = goalTotal();
+  }
+  games.unshift(entry);
+  if (games.length > 50) games.length = 50;
+  LS.set("worldpi-games", games);
+}
 
 function finish(won){
   over = true;
   clearInterval(timerInt);
-  missingAtEnd = Object.keys(C).filter(k => !found.has(k));
+  if (won) sfx("win");
+  logGame(won);
+  const panel = document.getElementById("endpanel");
+  const tm = fmtTime(elapsed);
+  const list = document.getElementById("misslist");
+  list.innerHTML = "";
+  if (mode === "hotcold"){
+    if (!won) guesses.push({key: targetKey, prox: 1, dist: 0});
+    repaint();
+    renderHistory();
+    const st = bumpStats(won);
+    const [lat, lon] = latLonOf(targetKey);
+    camTarget = 2.3;
+    animateTo(lat, lon, 2.3);
+    addFlag(targetKey);
+    panel.classList.toggle("win", won);
+    document.getElementById("endtitle").textContent = won ? t("youWin") : t("outOfLuck");
+    document.getElementById("endsub").textContent = won
+      ? t("foundIn", C[targetKey][0], guessCount, tm)
+      : t("itWas", C[targetKey][0], guessCount);
+    document.getElementById("endstats").textContent =
+      t("statsGuess", st.bestGuesses, st.streak, st.maxStreak, st.wins, st.plays);
+    const share = document.getElementById("shareend");
+    share.style.display = "";
+    share.dataset.share = shareText(won);
+    share.textContent = t("share");
+    panel.style.display = "block";
+    document.getElementById("giveup").style.display = "none";
+    document.getElementById("hint").style.display = "none";
+    input.disabled = true;
+    input.placeholder = t("gameOver");
+    return;
+  }
+  panel.classList.remove("win");
+  document.getElementById("shareend").style.display = "none";
+  const pst = bumpStats(won);
+  document.getElementById("endstats").textContent = won ? t("statsPractice", fmtTime(pst.bestTime), pst.wins) : "";
+  const goalArr = regionFilter ? Object.keys(C).filter(k => C[k][1] === regionFilter) : Object.keys(C);
+  const gTotal = goalArr.length;
+  const rname = regionFilter ? contName(regionFilter) : t("worldWord");
+  missingAtEnd = goalArr.filter(k => !found.has(k));
   for (const k of missingAtEnd) addFlag(k);
   repaint();
   camTarget = 3.0;
-  const panel = document.getElementById("endpanel");
-  const m = String(Math.floor(elapsed / 60)).padStart(2, "0"), s = String(elapsed % 60).padStart(2, "0");
   document.getElementById("endtitle").textContent = won
-    ? `World complete — ${TOTAL}/${TOTAL} in ${m}:${s}`
-    : `${found.size}/${TOTAL} in ${m}:${s}`;
+    ? t("complete", rname, gTotal, tm)
+    : t("incomplete", found.size, gTotal, tm);
   document.getElementById("endsub").textContent = won
-    ? "All 197. Nothing left to name."
-    : `You missed ${missingAtEnd.length}. They\u2019re shown in red on the globe:`;
-  const list = document.getElementById("misslist");
-  list.innerHTML = "";
+    ? t("everyNamed", rname)
+    : t("youMissed", missingAtEnd.length);
   if (!won){
     for (const code of ["SA","NA","EU","AF","AS","OC"]){
       const ms = missingAtEnd.filter(k => C[k][1] === code).map(k => C[k][0]).sort();
       if (!ms.length) continue;
       const g = document.createElement("div");
       g.className = "missgroup";
-      g.innerHTML = `<h3 style="color:var(--${code})">${CONTS[code]} — ${ms.length}</h3>
+      g.innerHTML = `<h3 style="color:var(--${code})">${contName(code)} — ${ms.length}</h3>
         <ul>${ms.map(n => `<li>${n}</li>`).join("")}</ul>`;
       list.appendChild(g);
     }
@@ -839,13 +1559,16 @@ function finish(won){
   document.getElementById("giveup").style.display = "none";
   document.getElementById("hint").style.display = "none";
   input.disabled = true;
-  input.placeholder = "Game over — reload to play again";
+  input.placeholder = t("gameOver");
 }
 document.getElementById("closeend").addEventListener("click", () =>
   document.getElementById("endpanel").style.display = "none");
 
 function restartGame(){
-  if (over || confirm("Restart the game? Your progress will be lost.")) location.reload();
+  if (!over && !confirm(t("confirmRestart"))) return;
+  // replay same mode, skip the menu; daily replays as a fresh random round
+  if (mode) sessionStorage.setItem(REPLAY_KEY, mode === "practice" ? "practice:" + (regionFilter || "") : "hotcold");
+  location.reload();
 }
 document.getElementById("restartbtn").addEventListener("click", restartGame);
 document.getElementById("restartend").addEventListener("click", restartGame);
