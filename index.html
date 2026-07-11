@@ -786,6 +786,19 @@ function fillKey(key, color, alpha, borderAlpha){
     ctx.beginPath(); ctx.arc(m.x, m.y, 6, 0, 2*Math.PI); ctx.fill();
   }
 }
+// fine black contour on every country's borders (drawn over the fills)
+function drawAllBorders(){
+  ctx.globalAlpha = 0.55;
+  ctx.strokeStyle = "#000";
+  ctx.lineWidth = 0.35;   // data-space (2048); ~0.7px at 4096 canvas res
+  ctx.lineJoin = "round"; ctx.lineCap = "round";
+  for (const key in GEO.countries){
+    const p = new Path2D();
+    ringPath(p, GEO.countries[key].r);
+    ctx.stroke(p);
+  }
+  ctx.globalAlpha = 1;
+}
 let missingAtEnd = [];
 function repaint(){
   ctx.setTransform(1, 0, 0, 1, 0, 0);
@@ -808,6 +821,7 @@ function repaint(){
     }
     if (over) for (const key of missingAtEnd) fillKey(key, "#e04a5f", .62);
   }
+  drawAllBorders();
   tex.needsUpdate = true;
 }
 
