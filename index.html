@@ -497,8 +497,30 @@ const TERR = {
   "New Caledonia":"France",
   "Puerto Rico":"United States of America",
   "N. Cyprus":"Cyprus",
-  "Somaliland":"Somalia"
+  "Somaliland":"Somalia",
+  "French Guiana":"France"
 };
+// French Guiana is stored as part of France's polygon (a Europe country), so it
+// rendered in Europe's blue sitting in the middle of South America. Split its ring
+// out into its own territory so it can be colored as South America; it still fills
+// when France is named. TERR_CONT colors listed territories by their own region.
+const TERR_CONT = { "French Guiana":"SA" };
+(function splitFrenchGuiana(){
+  const fr = GD.countries["France"];
+  if (!fr || GD.countries["French Guiana"]) return;
+  const keep = [], fg = [];
+  for (const ring of fr.r){
+    let mnx=Infinity, mxx=-Infinity, mny=Infinity, mxy=-Infinity;
+    for (const [x,y] of ring){ if(x<mnx)mnx=x; if(x>mxx)mxx=x; if(y<mny)mny=y; if(y>mxy)mxy=y; }
+    (mnx>=705 && mxx<=735 && mny>=475 && mxy<=505 ? fg : keep).push(ring);
+  }
+  if (!fg.length) return;
+  fr.r = keep;
+  let sx=0, sy=0, n=0;
+  for (const ring of fg) for (const [x,y] of ring){ sx+=x; sy+=y; n++; }
+  const cx=sx/n, cy=sy/n;
+  GD.countries["French Guiana"] = { r: fg, lon: cx/2048*360-180, lat: 90-cy/1024*180, ext: 4 };
+})();
 const CONT_I18N = {
   en: {AF:"Africa",AS:"Asia",EU:"Europe",NA:"North America",SA:"South America",OC:"Oceania"},
   es: {AF:"África",AS:"Asia",EU:"Europa",NA:"Norteamérica",SA:"Sudamérica",OC:"Oceanía"}
@@ -804,7 +826,10 @@ function repaint(){
     for (const key of found){
       const color = COLORS[C[key][1]];
       fillKey(key, color, .58);
-      for (const t of TERR_OF[key]||[]) fillKey(t, color, .32, .5);
+      for (const t of TERR_OF[key]||[]){
+        if (TERR_CONT[t]) fillKey(t, COLORS[TERR_CONT[t]], .58);   // colored by its own region
+        else fillKey(t, color, .32, .5);
+      }
     }
     if (over) for (const key of missingAtEnd) fillKey(key, "#e04a5f", .62);
   }
@@ -1727,6 +1752,6 @@ input.focus();
 if ('serviceWorker' in navigator && location.protocol.startsWith('http'))
   navigator.serviceWorker.register('sw.js').catch(()=>{});
 </script>
-<div id="version" style="position:fixed;right:10px;bottom:8px;z-index:60;pointer-events:none;user-select:none;font-family:var(--sans);font-size:11px;letter-spacing:.5px;color:rgba(255,255,255,.32)">mk.1.3</div>
+<div id="version" style="position:fixed;right:10px;bottom:8px;z-index:60;pointer-events:none;user-select:none;font-family:var(--sans);font-size:11px;letter-spacing:.5px;color:rgba(255,255,255,.32)">mk.1.4</div>
 </body>
 </html>
