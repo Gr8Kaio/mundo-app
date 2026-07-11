@@ -521,6 +521,13 @@ const TERR_CONT = { "French Guiana":"SA" };
   const cx=sx/n, cy=sy/n;
   GD.countries["French Guiana"] = { r: fg, lon: cx/2048*360-180, lat: 90-cy/1024*180, ext: 4 };
 })();
+// Amapá / northern-Brazil coast: the simplified country outline sits inland of the
+// satellite coastline, leaving a strip of Brazil's coast uncolored. Traced coast
+// polygons (map data space) that fill as Brazil (South America) when Brazil is named.
+const BR_COAST_PATCH = [[[735,510.25],[735.75,510.5],[736.25,511],[736.75,511.5],[737.25,512],[736.75,512.5],[736.25,513],[735.75,513.5],[735.75,514.5],[735.5,515.25],[735.25,516],[735,516.75],[734.5,517.25],[734,517.75],[733.25,518],[732.75,518],[732.25,517.5],[731.75,517],[732,516.25],[732.25,515.5],[731.75,515],[731.25,514.5],[731.25,513.5],[731.75,513],[732.25,512.5],[733,512.25],[733.5,512.75],[734,513.25],[734.5,512.75],[734.5,512.25],[734,511.75],[734,511.25],[734.5,510.75],[735,510.25]],[[734,493.25],[736.25,495],[739,496.25],[741.75,497.5],[744,499.25],[745.75,501.5],[747.25,504],[748.25,507],[749.75,509.5],[749.75,512.5],[752,514.25],[754.5,515.25],[752.5,516.25],[749.75,516.5],[748.5,518.75],[746.75,520],[746.5,517.75],[747.75,515],[746.5,513.25],[743.25,512.5],[741,510.75],[738.75,510],[737,507.75],[738.5,505.75],[739.5,503.25],[737.5,501.25],[735.5,499.25],[734.25,496.5],[733.5,493.75]]];
+GD.countries["Brazil coast"] = { r: BR_COAST_PATCH, lon: -50.21, lat: 0.23, ext: 6 };
+TERR["Brazil coast"] = "Brazil";
+TERR_CONT["Brazil coast"] = "SA";
 const CONT_I18N = {
   en: {AF:"Africa",AS:"Asia",EU:"Europe",NA:"North America",SA:"South America",OC:"Oceania"},
   es: {AF:"África",AS:"Asia",EU:"Europa",NA:"Norteamérica",SA:"Sudamérica",OC:"Oceanía"}
@@ -1752,6 +1759,6 @@ input.focus();
 if ('serviceWorker' in navigator && location.protocol.startsWith('http'))
   navigator.serviceWorker.register('sw.js').catch(()=>{});
 </script>
-<div id="version" style="position:fixed;right:10px;bottom:8px;z-index:60;pointer-events:none;user-select:none;font-family:var(--sans);font-size:11px;letter-spacing:.5px;color:rgba(255,255,255,.32)">mk.1.4</div>
+<div id="version" style="position:fixed;right:10px;bottom:8px;z-index:60;pointer-events:none;user-select:none;font-family:var(--sans);font-size:11px;letter-spacing:.5px;color:rgba(255,255,255,.32)">mk.1.5</div>
 </body>
 </html>
